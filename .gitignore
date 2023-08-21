@@ -1,0 +1,9 @@
+.ANSIBLE_VAULT_PASS
+*.retry
+.DS_Store
+*.swp
+venv/
+credentials
+k8s_facts.env
+required-roles/
+tmp

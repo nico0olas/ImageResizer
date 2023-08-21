@@ -1,0 +1,53 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="{% static 'css/style_result.css' %}">
+
+</head>
+<body>
+    <div class="container">
+    <div id="countdown-message">
+        <h1>Voici la liste de vos images compressées.</h1>
+            <p style=" color: red;">Les images vont s'autodétruire dans <span id="countdown-timer">{{ delay }}</span> secondes, téléchargez les vites !!!</p>
+            {% for key, value in result.items %}
+                <p> <b> Nom original: </b> {{ value.name }} </p>
+                <img src="{{ value.url }}" alt="" title="fff" style="width: 300px;">
+                <a href="{{ value.url }}" class="download-btn" target="_blank" rel="noopener noreferrer">Télécharger l'image</a>
+    
+                <br><hr><br>
+            {% endfor %}
+    </div>
+
+    <div id="image-deleted-message" style="display: none; text-align: center;">
+        <h1>Le delai est dépassé</h1>
+        <p>Les images ont été détruites du server. Veuillez recommencer le processus si nécessaire</p>
+        <a href="{% url 'index' %}" class="download-btn">On recommence ?</a>
+    </div>
+</div>
+
+<script>
+    function startCountdown() {
+        var timer = {{ delay }};
+        var countdownElement = document.getElementById("countdown-timer");
+        var imageDeletedMessage = document.getElementById("image-deleted-message");
+    
+        var countdownInterval = setInterval(function() {
+            countdownElement.textContent = timer;
+            timer--;
+    
+            if (timer < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown-message").style.display = "none";
+                imageDeletedMessage.style.display = "block"; // Afficher le message
+            }
+        }, 1000);
+    }    
+    window.onload = startCountdown;
+</script>
+    
+</body>
+</html>

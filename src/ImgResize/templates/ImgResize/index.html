@@ -1,0 +1,44 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Resizer</title>
+    <link rel="stylesheet" href="{% static 'css/style_index.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Image Resizer</h1>
+        <div class="speech-bubble">
+            Choisissez jusqu'à <b>{{ max_img }} images</b> que vous souhaitez compresser, puis sélectionnez le degré de compression souhaité. Vous disposerez ensuite de <b> {{ delay }} secondes</b> pour télécharger les nouvelles images avant qu'elles ne soient supprimées definitivement du serveur.
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input type="submit" value="Resize">
+            {% if err %}
+            <div class="error-message">
+                <br>    
+                <span class="warning-icon">&#9888;</span>
+                <span>Erreur: {{ err|safe }}</span>
+            </div>
+            {% endif %}
+
+            <div id="loading-indicator" style="display: none;">
+                <span class="loading-emoji">🖊️</span>
+            </div>
+
+        </form>     
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+            const loadingIndicator = document.getElementById("loading-indicator");
+    
+            form.addEventListener("submit", function() {
+                loadingIndicator.style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>
